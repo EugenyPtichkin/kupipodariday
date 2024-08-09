@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
 } from 'typeorm';
-import { IsUrl, IsNumber } from 'class-validator';
+import { IsNumber } from 'class-validator';
 import { Wish } from '../../wishes/entities/wish.entity';
 import { User } from '../../users/entities/user.entity';
 
@@ -29,12 +29,10 @@ export class Offer {
   @ManyToOne(() => Wish, (wish) => wish.offers)
   item: Wish;
 
-
   @Column('decimal')
   @IsNumber()
   amount: number;
 
-
-
-  
+  @Column({ default: false })
+  hidden: boolean;
 }

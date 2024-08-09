@@ -36,12 +36,9 @@ export class WishList {
   @IsUrl()
   image: string;
 
-  @ManyToOne(() => Wish, (wishes) => wishes.name)
-  wishes: Wish[];
+  @ManyToMany(() => Wish, (wishes) => wishes.wishlist)
+  items: Wish[];
 
   @ManyToOne(() => User, (users) => users.wishlists)
   owner: User;
-
-  @ManyToMany(() => Wish, (wishes) => wishes.wishlist)
-  items: Wish[];
 }
