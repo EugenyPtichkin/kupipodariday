@@ -7,6 +7,7 @@ import {
   ManyToOne,
   OneToMany,
   ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { Length, IsUrl, Min, IsNumber } from 'class-validator';
 import { User } from '../../users/entities/user.entity';
@@ -43,7 +44,7 @@ export class Wish {
   price: number;
 
   @Column('decimal')
-  @Min(0)
+  @Min(1)
   raised: number;
 
   @ManyToOne(() => User, (user) => user.wishes)
@@ -62,5 +63,6 @@ export class Wish {
   copied: number;
 
   @ManyToMany(() => WishList, (wishlists) => wishlists.items)
+  @JoinTable()
   wishlist: WishList[];
 }

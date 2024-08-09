@@ -1,26 +1,55 @@
 import { Injectable } from '@nestjs/common';
 import { CreateWishlistDto } from './dto/create-wishlist.dto';
 import { UpdateWishlistDto } from './dto/update-wishlist.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { WishList } from './entities/wishlist.entity';
 
 @Injectable()
 export class WishlistsService {
-  create(createWishlistDto: CreateWishlistDto) {
-    return 'This action adds a new wishlist';
+  constructor(
+    @InjectRepository(WishList)
+    private wishListRepository: Repository<WishList>,
+  ) {}
+
+  async create(createWishlistDto: CreateWishlistDto) {
+    const newWishlist = await this.wishListRepository.save(createWishlistDto);
+    return newWishlist;
   }
 
   findAll() {
-    return `This action returns all wishlists`;
+    return `This action returns all wishLists`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} wishlist`;
+  async findOne(wishListId: number) {
+    const wishList = await this.wishListRepository.findOneBy({
+      id: wishListId,
+    });
+    return wishList;
   }
 
-  update(id: number, updateWishlistDto: UpdateWishlistDto) {
-    return `This action updates a #${id} wishlist`;
+  async updateOne(wishListId: number, updateWishlistDto: UpdateWishlistDto) {
+    const wishListToBeUpdated = await this.wishListRepository.findOne({
+      select: {
+        id: true,
+        name: true,
+        image: true,
+      },
+      where: {
+        id: wishListId,
+      },
+    });
+    for (const key in updateWishlistDto) {
+      wishListToBeUpdated[key] = updateWishlistDto[key];
+    }
+    const wishList = await this.wishListRepository.save(wishListToBeUpdated);
+    return wishList;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} wishlist`;
+  async removeOne(wishListId: number) {
+    const wishToBeRemoved = await this.wishListRepository.findOneBy({
+      id: wishListId,
+    });
+    return await this.wishListRepository.remove(wishToBeRemoved);
   }
 }
