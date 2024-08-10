@@ -4,10 +4,22 @@ import {
   IsString,
   IsUrl,
   Length,
-  IsNumber,
+  IsInt,
+  IsDate,
 } from 'class-validator';
+import { Wish } from './../../wishes/entities/wish.entity';
+import { User } from './../../users/entities/user.entity';
 
 export class CreateWishlistDto {
+  @IsInt()
+  id: number;
+
+  @IsDate()
+  createdAt: Date;
+
+  @IsDate()
+  updatedAt: Date;
+
   @IsString()
   @Length(1, 250)
   name: string;
@@ -22,10 +34,7 @@ export class CreateWishlistDto {
   description: string;
 
   @IsArray()
-  @IsOptional()
-  itemsId: number[];
+  items: Wish[];
 
-  @IsNumber()
-  @IsOptional()
-  ownerId: number;
+  owner: User;
 }

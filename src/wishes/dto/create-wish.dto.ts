@@ -6,9 +6,22 @@ import {
   Min,
   IsOptional,
   IsArray,
+  IsInt,
+  IsDate,
 } from 'class-validator';
+import { Offer } from './../../offers/entities/offer.entity';
+import { WishList } from './../../wishlists/entities/wishlist.entity';
 
 export class CreateWishDto {
+  @IsInt()
+  id: number;
+
+  @IsDate()
+  createdAt: Date;
+
+  @IsDate()
+  updatedAt: Date;
+
   @IsString()
   @Length(1, 250)
   name: string;
@@ -44,9 +57,9 @@ export class CreateWishDto {
 
   @IsArray()
   @IsOptional()
-  offersId: number[];
+  offers: Offer[];
 
   @IsArray()
   @IsOptional()
-  wishlistId: number[];
+  wishlist: WishList[];
 }
