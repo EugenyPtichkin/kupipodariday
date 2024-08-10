@@ -12,19 +12,25 @@ import { Offer } from './offers/entities/offer.entity';
 import { WishList } from './wishlists/entities/wishlist.entity';
 import { AuthModule } from './auth/auth.module';
 import { HashModule } from './hash/hash.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'student',
-      password: 'student',
-      database: 'nest_project',
-      entities: [User, Wish, Offer, WishList],
-      synchronize: true,
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get('DATABASE_HOST'),
+        port: configService.get('DATABASE_PORT'),
+        username: configService.get('DATABASE_USERNAME'),
+        password: configService.get('DATABASE_PASSWORD'),
+        database: configService.get('DATABASE_NAME'),
+        entities: [User, Wish, Offer, WishList],
+        synchronize: true,
+      }),
+      inject: [ConfigService],
     }),
+    ConfigModule.forRoot({ isGlobal: true }),
     UsersModule,
     WishesModule,
     WishlistsModule,

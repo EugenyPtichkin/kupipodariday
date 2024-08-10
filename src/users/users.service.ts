@@ -50,6 +50,13 @@ export class UsersService {
     }
     return user;
   }
+  async findByUserName(username: string) {
+    const user = await this.userRepository.findOneBy({ username });
+    if (!user) {
+      throw new NotFoundException('Пользователь user не найден');
+    }
+    return user;
+  }
 
   async updateOne(userId: number, updateUserDto: UpdateUserDto) {
     const { username, email, password } = updateUserDto;
