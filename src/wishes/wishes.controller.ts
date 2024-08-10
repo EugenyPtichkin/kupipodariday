@@ -26,17 +26,17 @@ export class WishesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.wishesService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    return this.wishesService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateWishDto: UpdateWishDto) {
-    return this.wishesService.updateOne(+id, updateWishDto);
+  update(@Param('id') id: number, @Body() updateWishDto: UpdateWishDto) {
+    return this.wishesService.updateOne(id, updateWishDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.wishesService.removeOne(+id);
+  remove(@Param('id') id: number) {
+    return this.wishesService.removeOne(id);
   }
 }

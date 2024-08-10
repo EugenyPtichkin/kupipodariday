@@ -29,7 +29,6 @@ export class UsersService {
   async updateOne(userId: number, updateUserDto: UpdateUserDto) {
     const userToBeUpdated = await this.userRepository.findOne({
       select: {
-        id: true,
         username: true,
         email: true,
         password: true,
