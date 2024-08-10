@@ -39,11 +39,13 @@ export class UsersService {
     return newUser;
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findMany(query: string) {
+    return await this.userRepository.find({
+      where: [{ username: query }, { email: query }],
+    });
   }
 
-  async findOne(id: number) {
+  async findOneById(id: number) {
     const user = await this.userRepository.findOneBy({ id });
     if (!user) {
       throw new NotFoundException('Пользователь с таким id не найден');
@@ -58,7 +60,7 @@ export class UsersService {
     return user;
   }
 
-  async updateOne(userId: number, updateUserDto: UpdateUserDto) {
+  async updateOneById(userId: number, updateUserDto: UpdateUserDto) {
     const { username, email, password } = updateUserDto;
     if (email) {
       const userUsesEmail = await this.userRepository.findOne({
@@ -76,7 +78,7 @@ export class UsersService {
       }
     }
     if (username) {
-      const userUsesUsername = await this.userRepository.findOne({
+      const userUsesUserName = await this.userRepository.findOne({
         select: {
           username: true,
           email: true,
@@ -86,7 +88,7 @@ export class UsersService {
           username: username,
         },
       });
-      if (userUsesUsername && userUsesUsername.id !== userId) {
+      if (userUsesUserName && userUsesUserName.id !== userId) {
         throw new ConflictException('Такой username уже используется');
       }
     }
@@ -115,7 +117,7 @@ export class UsersService {
     return updatedUser;
   }
 
-  async removeOne(userId: number) {
+  async removeOneById(userId: number) {
     const userToBeRemoved = await this.userRepository.findOneBy({ id: userId });
     return await this.userRepository.remove(userToBeRemoved);
   }

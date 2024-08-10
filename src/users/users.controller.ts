@@ -6,10 +6,9 @@ import {
   Patch,
   Param,
   Delete,
-  Request,
+  Req,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('users')
@@ -17,32 +16,32 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get('me')
-  async find(@Request() req) {
-    return await this.usersService.findOne(req.user.id);
+  async find(@Req() req) {
+    return await this.usersService.findOneById(req.user.id);
   }
 
   @Patch('me')
-  async update(@Request() req, @Body() updateUserDto: UpdateUserDto) {
-    return await this.usersService.updateOne(req.user.id, updateUserDto);
+  async update(@Req() req, @Body() updateUserDto: UpdateUserDto) {
+    return await this.usersService.updateOneById(req.user.id, updateUserDto);
   }
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  @Get(':username')
+  async FindByUserName(@Param('username') username: string) {
+    return await this.usersService.findByUserName(username);
   }
 
-  @Get()
-  findAll() {
-    return this.usersService.findAll();
+  @Post('find')
+  findMany(@Body('query') query: string) {
+    return this.usersService.findMany(query);
   }
 
   @Get(':id')
   findOne(@Param('id') id: number) {
-    return this.usersService.findOne(id);
+    return this.usersService.findOneById(id);
   }
 
   @Delete(':id')
   remove(@Param('id') id: number) {
-    return this.usersService.removeOne(id);
+    return this.usersService.removeOneById(id);
   }
 }
