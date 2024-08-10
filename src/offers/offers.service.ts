@@ -20,11 +20,11 @@ export class OffersService {
     return `This action returns all offers`;
   }
 
-  findOne(offerId: number) {
+  findOneById(offerId: number) {
     return this.offerRepository.findOneBy({ id: offerId });
   }
 
-  async updateOne(offerId: number, updateOfferDto: UpdateOfferDto) {
+  async updateOneById(offerId: number, updateOfferDto: UpdateOfferDto) {
     const offerToBeUpdated = await this.offerRepository.findOne({
       select: {
         id: true,
@@ -42,7 +42,7 @@ export class OffersService {
     return offer;
   }
 
-  async removeOne(offerId: number) {
+  async removeOneById(offerId: number) {
     const offerToBeRemoved = await this.offerRepository.findOneBy({
       id: offerId,
     });

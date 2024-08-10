@@ -21,14 +21,17 @@ export class WishlistsService {
     return `This action returns all wishLists`;
   }
 
-  async findOne(wishListId: number) {
+  async findOneById(wishListId: number) {
     const wishList = await this.wishListRepository.findOneBy({
       id: wishListId,
     });
     return wishList;
   }
 
-  async updateOne(wishListId: number, updateWishlistDto: UpdateWishlistDto) {
+  async updateOneById(
+    wishListId: number,
+    updateWishlistDto: UpdateWishlistDto,
+  ) {
     const wishListToBeUpdated = await this.wishListRepository.findOne({
       select: {
         id: true,
@@ -46,7 +49,7 @@ export class WishlistsService {
     return wishList;
   }
 
-  async removeOne(wishListId: number) {
+  async removeOneById(wishListId: number) {
     const wishToBeRemoved = await this.wishListRepository.findOneBy({
       id: wishListId,
     });

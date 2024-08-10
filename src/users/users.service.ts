@@ -25,7 +25,7 @@ export class UsersService {
     });
     if (exists) {
       throw new ConflictException(
-        'Пользователь с таким email или username уже существует',
+        'Пользователь с таким email или username уже зарегистрирован',
       );
     }
     const user = this.userRepository.create({
@@ -74,7 +74,9 @@ export class UsersService {
         },
       });
       if (userUsesEmail && userUsesEmail.id !== userId) {
-        throw new ConflictException('Такой email уже используется');
+        throw new ConflictException(
+          'Ошибка валидации переданных значений: email уже занят',
+        );
       }
     }
     if (username) {
@@ -89,7 +91,9 @@ export class UsersService {
         },
       });
       if (userUsesUserName && userUsesUserName.id !== userId) {
-        throw new ConflictException('Такой username уже используется');
+        throw new ConflictException(
+          'Ошибка валидации переданных значений: username уже занят',
+        );
       }
     }
     if (password) {

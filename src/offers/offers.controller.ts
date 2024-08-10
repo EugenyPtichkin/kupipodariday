@@ -27,16 +27,16 @@ export class OffersController {
 
   @Get(':id')
   findOne(@Param('id') id: number) {
-    return this.offersService.findOne(id);
+    return this.offersService.findOneById(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: number, @Body() updateOfferDto: UpdateOfferDto) {
-    return this.offersService.updateOne(id, updateOfferDto);
+    return this.offersService.updateOneById(id, updateOfferDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: number) {
-    return this.offersService.removeOne(id);
+    return this.offersService.removeOneById(id);
   }
 }

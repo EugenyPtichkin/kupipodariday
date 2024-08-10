@@ -27,7 +27,7 @@ export class WishlistsController {
 
   @Get(':id')
   findOne(@Param('id') id: number) {
-    return this.wishlistsService.findOne(id);
+    return this.wishlistsService.findOneById(id);
   }
 
   @Patch(':id')
@@ -35,11 +35,11 @@ export class WishlistsController {
     @Param('id') id: number,
     @Body() updateWishlistDto: UpdateWishlistDto,
   ) {
-    return this.wishlistsService.updateOne(id, updateWishlistDto);
+    return this.wishlistsService.updateOneById(id, updateWishlistDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: number) {
-    return this.wishlistsService.removeOne(id);
+    return this.wishlistsService.removeOneById(id);
   }
 }

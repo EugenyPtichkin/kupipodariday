@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Req,
 } from '@nestjs/common';
 import { WishesService } from './wishes.service';
 import { CreateWishDto } from './dto/create-wish.dto';
@@ -16,27 +17,45 @@ export class WishesController {
   constructor(private readonly wishesService: WishesService) {}
 
   @Post()
-  create(@Body() createWishDto: CreateWishDto) {
-    return this.wishesService.create(createWishDto);
+  async create(@Req() req, @Body() createWishDto: CreateWishDto) {
+    return await this.wishesService.create(req.user.id, createWishDto);
   }
 
-  @Get()
-  findAll() {
-    return this.wishesService.findAll();
+  @Get('last')
+  async findLast() {
+    return await this.wishesService.findLast();
+  }
+
+  @Get('top')
+  async findTop() {
+    return await this.wishesService.findTop();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number) {
-    return this.wishesService.findOne(id);
+  async findOne(@Param('id') id: number) {
+    return await this.wishesService.findOneById(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: number, @Body() updateWishDto: UpdateWishDto) {
-    return this.wishesService.updateOne(id, updateWishDto);
+  async update(
+    @Param('id') wishId: number,
+    @Body() updateWishDto: UpdateWishDto,
+    @Req() req,
+  ) {
+    return await this.wishesService.updateOneById(
+      req.user.id,
+      wishId,
+      updateWishDto,
+    );
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.wishesService.removeOne(id);
+  async removeOne(@Req() req, @Param('id') wishId: number) {
+    return await this.wishesService.removeOneById(req.user.id, wishId);
+  }
+
+  @Post(':id/copy')
+  async copyWish(@Req() req, @Param('id') wishId: number) {
+    return await this.wishesService.copyWish(req.user.id, wishId);
   }
 }
