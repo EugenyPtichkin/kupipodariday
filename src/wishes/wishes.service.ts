@@ -104,7 +104,7 @@ export class WishesService {
     if (wishToBeRemoved.owner.id !== userId) {
       throw new BadRequestException('Чужой подарок нельзя удалить');
     }
-    await this.wishRepository.delete(wishId);
+    await this.wishRepository.remove(wishToBeRemoved);
     return wishToBeRemoved;
   }
 
@@ -125,7 +125,7 @@ export class WishesService {
     });
 
     const isUserHasWish = user.wishes.some(
-      (wishItem) => wishItem.id === wishToBeCopied.wishId,
+      (wishItem) => wishItem.id === wishToBeCopied.id,
     );
     if (isUserHasWish) {
       throw new ConflictException('У Вас уже есть этот подарок');

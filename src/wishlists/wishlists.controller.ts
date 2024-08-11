@@ -11,23 +11,27 @@ import {
 import { WishlistsService } from './wishlists.service';
 import { CreateWishlistDto } from './dto/create-wishlist.dto';
 import { UpdateWishlistDto } from './dto/update-wishlist.dto';
+import { WishList } from './entities/wishlist.entity';
 
 @Controller('wishlists')
 export class WishlistsController {
   constructor(private readonly wishlistsService: WishlistsService) {}
 
   @Get()
-  findAll() {
+  findAll(): Promise<WishList[]> {
     return this.wishlistsService.findAll();
   }
 
   @Post()
-  async create(@Req() req, @Body() createWishlistDto: CreateWishlistDto) {
+  async create(
+    @Req() req,
+    @Body() createWishlistDto: CreateWishlistDto,
+  ): Promise<WishList> {
     return await this.wishlistsService.create(req.user.id, createWishlistDto);
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: number) {
+  async findOne(@Param('id') id: number): Promise<WishList> {
     return await this.wishlistsService.findOneById(id);
   }
 
@@ -36,7 +40,7 @@ export class WishlistsController {
     @Param('id') id: number,
     @Body() updateWishlistDto: UpdateWishlistDto,
     @Req() req,
-  ) {
+  ): Promise<WishList> {
     return this.wishlistsService.updateOneById(
       id,
       req.user.id,
@@ -45,7 +49,7 @@ export class WishlistsController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: number, @Req() req) {
+  async remove(@Param('id') id: number, @Req() req): Promise<WishList> {
     return await this.wishlistsService.removeOneById(id, req.user.id);
   }
 }
