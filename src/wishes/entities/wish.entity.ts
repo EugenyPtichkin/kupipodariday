@@ -9,7 +9,7 @@ import {
   ManyToMany,
   JoinTable,
 } from 'typeorm';
-import { Length, IsUrl, Min, IsNumber } from 'class-validator';
+import { Length, IsUrl, Min, IsDecimal } from 'class-validator';
 import { User } from '../../users/entities/user.entity';
 import { Offer } from '../../offers/entities/offer.entity';
 import { WishList } from '../../wishlists/entities/wishlist.entity';
@@ -27,7 +27,7 @@ export class Wish {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Column({ unique: true })
+  @Column()
   @Length(1, 250)
   name: string;
 
@@ -39,12 +39,20 @@ export class Wish {
   @IsUrl()
   image: string;
 
-  @Column('decimal')
+  @Column({
+    default: 0,
+    type: 'decimal',
+    scale: 2,
+  })
   @Min(0)
   price: number;
 
-  @Column('decimal')
-  @Min(1)
+  @Column({
+    default: 0,
+    type: 'decimal',
+    scale: 2,
+  })
+  @Min(0)
   raised: number;
 
   @ManyToOne(() => User, (user) => user.wishes)
@@ -57,9 +65,11 @@ export class Wish {
   @OneToMany(() => Offer, (offers) => offers.item)
   offers: Offer[];
 
-  @Column()
-  @IsNumber()
-  @Min(0)
+  @Column({
+    type: 'int',
+    default: 0,
+  })
+  @IsDecimal()
   copied: number;
 
   @ManyToMany(() => WishList, (wishlists) => wishlists.items)

@@ -37,6 +37,7 @@ export class UsersService {
       password: this.hashService.getHash(createUserDto.password),
     });
     const newUser = await this.userRepository.save(user);
+    delete newUser.password;
     return newUser;
   }
 
@@ -51,6 +52,7 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('Пользователь с таким id не найден');
     }
+    delete user.password;
     return user;
   }
 
@@ -59,6 +61,7 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('Пользователь user не найден');
     }
+    delete user.password;
     return user;
   }
 
@@ -69,15 +72,15 @@ export class UsersService {
     const { username, email, password } = updateUserDto;
     if (email) {
       const userUsesEmail = await this.userRepository.findOne({
-        select: {
-          username: true,
-          email: true,
-          password: true,
-        },
         where: {
           email: email,
         },
       });
+      if (userUsesEmail) {
+        console.log(
+          `userUsesEmail=${userUsesEmail} userUsesEmail.id=${userUsesEmail.id} userId=${userId}`,
+        );
+      }
       if (userUsesEmail && userUsesEmail.id !== userId) {
         throw new ConflictException(
           'Ошибка валидации переданных значений: email уже занят',
@@ -86,15 +89,15 @@ export class UsersService {
     }
     if (username) {
       const userUsesUserName = await this.userRepository.findOne({
-        select: {
-          username: true,
-          email: true,
-          password: true,
-        },
         where: {
           username: username,
         },
       });
+      if (userUsesUserName) {
+        console.log(
+          `userUsesUserName.id=${userUsesUserName.id} userId=${userId}`,
+        );
+      }
       if (userUsesUserName && userUsesUserName.id !== userId) {
         throw new ConflictException(
           'Ошибка валидации переданных значений: username уже занят',
@@ -120,7 +123,9 @@ export class UsersService {
       userToBeUpdated[key] = updateUserDto[key];
     }
     await this.userRepository.update({ id: userId }, userToBeUpdated);
-    return this.userRepository.findOneBy({ id: userId });
+    const newUser = await this.userRepository.findOneBy({ id: userId });
+    delete newUser.password;
+    return newUser;
   }
 
   async findWishes(userId: number): Promise<Wish[]> {
