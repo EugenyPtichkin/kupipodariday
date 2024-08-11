@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { FindUsersDto } from './dto/find-users.dto';
@@ -6,7 +15,9 @@ import { UserProfileResponseDto } from './dto/user-profile-response.dto';
 import { Wish } from 'src/wishes/entities/wish.entity';
 import { UserPublicProfileResponseDto } from './dto/user-public-profile-response.dto';
 import { UserWishesDto } from './dto/user-wishes.dto';
+import { JwtGuard } from 'src/auth/guards/jwt.guard';
 
+@UseGuards(JwtGuard)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
