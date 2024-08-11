@@ -52,6 +52,7 @@ export class UsersService {
     }
     return user;
   }
+
   async findByUserName(username: string) {
     const user = await this.userRepository.findOneBy({ username });
     if (!user) {
@@ -119,6 +120,14 @@ export class UsersService {
       userToBeUpdated,
     );
     return updatedUser;
+  }
+
+  async findWishes(userId: number) {
+    const user = await this.userRepository.findOne({
+      relations: { wishes: true },
+      where: { id: userId },
+    });
+    return user.wishes;
   }
 
   async removeOneById(userId: number) {
