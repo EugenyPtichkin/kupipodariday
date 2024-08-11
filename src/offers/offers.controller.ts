@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Req,
 } from '@nestjs/common';
 import { OffersService } from './offers.service';
 import { CreateOfferDto } from './dto/create-offer.dto';
@@ -16,18 +17,18 @@ export class OffersController {
   constructor(private readonly offersService: OffersService) {}
 
   @Post()
-  create(@Body() createOfferDto: CreateOfferDto) {
-    return this.offersService.create(createOfferDto);
+  async create(@Body() createOfferDto: CreateOfferDto, @Req() req) {
+    return await this.offersService.create(req.user.id, createOfferDto);
   }
 
   @Get()
-  findAll() {
-    return this.offersService.findAll();
+  async findAll() {
+    return await this.offersService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number) {
-    return this.offersService.findOneById(id);
+  async findOne(@Param('id') id: number) {
+    return await this.offersService.findOneById(id);
   }
 
   @Patch(':id')
