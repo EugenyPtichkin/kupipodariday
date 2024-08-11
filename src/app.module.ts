@@ -11,6 +11,7 @@ import { WishList } from './wishlists/entities/wishlist.entity';
 import { AuthModule } from './auth/auth.module';
 import { HashModule } from './hash/hash.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -36,7 +37,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     AuthModule,
     HashModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [],
 })
 export class AppModule {}

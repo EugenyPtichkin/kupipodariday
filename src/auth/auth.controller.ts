@@ -6,7 +6,7 @@ import { CreateUserDto } from '../users/dto/create-user.dto';
 import { SigninUserResponseDto } from './dto/signin-user-response.dto';
 import { SignupUserResponseDto } from './dto/signup-user-response.dto';
 
-@Controller('auth')
+@Controller()
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
