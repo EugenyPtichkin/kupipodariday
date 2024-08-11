@@ -27,20 +27,25 @@ export class WishlistsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number) {
-    return this.wishlistsService.findOneById(id);
+  async findOne(@Param('id') id: number) {
+    return await this.wishlistsService.findOneById(id);
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: number,
     @Body() updateWishlistDto: UpdateWishlistDto,
+    @Req() req,
   ) {
-    return this.wishlistsService.updateOneById(id, updateWishlistDto);
+    return this.wishlistsService.updateOneById(
+      id,
+      req.user.id,
+      updateWishlistDto,
+    );
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.wishlistsService.removeOneById(id);
+  async remove(@Param('id') id: number, @Req() req) {
+    return await this.wishlistsService.removeOneById(id, req.user.id);
   }
 }
