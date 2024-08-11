@@ -12,13 +12,17 @@ export class WishlistsService {
     private wishListRepository: Repository<WishList>,
   ) {}
 
-  async create(createWishlistDto: CreateWishlistDto) {
+  async findAll() {
+    return await this.wishListRepository.find({
+      relations: {
+        owner: true,
+        items: true,
+      },
+    });
+  }
+  async create(userId: number, createWishlistDto: CreateWishlistDto) {
     const newWishlist = await this.wishListRepository.save(createWishlistDto);
     return newWishlist;
-  }
-
-  findAll() {
-    return `This action returns all wishLists`;
   }
 
   async findOneById(wishListId: number) {

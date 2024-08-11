@@ -1,33 +1,15 @@
-import {
-  IsBoolean,
-  IsNumber,
-  IsInt,
-  IsDate,
-  IsArray,
-  IsOptional,
-} from 'class-validator';
-import { Wish } from './../../wishes/entities/wish.entity';
-import { User } from './../../users/entities/user.entity';
+import { IsBoolean, IsNotEmpty, IsNumber, Min } from 'class-validator';
 
 export class CreateOfferDto {
-  @IsInt()
-  id: number;
-
-  @IsDate()
-  createdAt: Date;
-
-  @IsDate()
-  updatedAt: Date;
-
+  @IsNotEmpty()
   @IsNumber()
+  @Min(1)
   amount: number;
 
   @IsBoolean()
   hidden: boolean;
 
-  @IsArray()
-  @IsOptional()
-  items: Wish[];
-
-  owner: User;
+  @IsNotEmpty()
+  @IsNumber()
+  itemId: number;
 }

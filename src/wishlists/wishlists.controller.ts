@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Req,
 } from '@nestjs/common';
 import { WishlistsService } from './wishlists.service';
 import { CreateWishlistDto } from './dto/create-wishlist.dto';
@@ -15,14 +16,14 @@ import { UpdateWishlistDto } from './dto/update-wishlist.dto';
 export class WishlistsController {
   constructor(private readonly wishlistsService: WishlistsService) {}
 
-  @Post()
-  create(@Body() createWishlistDto: CreateWishlistDto) {
-    return this.wishlistsService.create(createWishlistDto);
-  }
-
   @Get()
   findAll() {
     return this.wishlistsService.findAll();
+  }
+
+  @Post()
+  async create(@Req() req, @Body() createWishlistDto: CreateWishlistDto) {
+    return await this.wishlistsService.create(req.user.id, createWishlistDto);
   }
 
   @Get(':id')

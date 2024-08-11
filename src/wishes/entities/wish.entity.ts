@@ -65,5 +65,4 @@ export class Wish {
   @ManyToMany(() => WishList, (wishlists) => wishlists.items)
   @JoinTable()
   wishlist: WishList[];
-  wishId: number;
 }
