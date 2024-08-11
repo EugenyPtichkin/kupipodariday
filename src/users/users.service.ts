@@ -129,9 +129,4 @@ export class UsersService {
     });
     return user.wishes;
   }
-
-  async removeOneById(userId: number) {
-    const userToBeRemoved = await this.userRepository.findOneBy({ id: userId });
-    return await this.userRepository.remove(userToBeRemoved);
-  }
 }

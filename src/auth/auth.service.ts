@@ -27,7 +27,6 @@ export class AuthService {
   ): Promise<SignupUserResponseDto> {
     const user = await this.usersService.findByUserName(username);
 
-    //if (user && user.password === password) {
     if (user && this.hashService.compare(password, user.password)) {
       // eslint-disable-next-line
       const { password, ...result } = user;

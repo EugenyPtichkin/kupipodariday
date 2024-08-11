@@ -1,13 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  Req,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Req } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { FindUsersDto } from './dto/find-users.dto';
@@ -45,15 +36,5 @@ export class UsersController {
   @Post('find')
   async findMany(@Body() findUserDto: FindUsersDto) {
     return await this.usersService.findMany(findUserDto.query);
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: number) {
-    return this.usersService.findOneById(id);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.usersService.removeOneById(id);
   }
 }
