@@ -17,7 +17,7 @@ export class AuthService {
   async auth(user: User): Promise<SigninUserResponseDto> {
     const payload = { sub: user.id };
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: this.jwtService.sign(payload, { expiresIn: '7d' }),
     };
   }
 
@@ -26,7 +26,6 @@ export class AuthService {
     password: string,
   ): Promise<SignupUserResponseDto> {
     const user = await this.usersService.findByUserName(username);
-
     if (user && this.hashService.compare(password, user.password)) {
       // eslint-disable-next-line
       const { password, ...result } = user;

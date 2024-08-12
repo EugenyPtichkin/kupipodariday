@@ -43,7 +43,7 @@ export class User {
   email: string;
 
   @Column()
-  password: string;
+  password?: string;
 
   @OneToMany(() => Wish, (wishes) => wishes.owner)
   wishes: Wish[];

@@ -42,9 +42,15 @@ export class UsersService {
   }
 
   async findMany(query: string): Promise<User[]> {
-    return await this.userRepository.find({
+    const usersWithPassword = await this.userRepository.find({
       where: [{ username: query }, { email: query }],
     });
+    const usersWithoutPassword = usersWithPassword.map((users) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { password, ...userRest } = users;
+      return userRest;
+    });
+    return usersWithoutPassword;
   }
 
   async findOneById(id: number): Promise<User> {
@@ -61,7 +67,6 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('Пользователь user не найден');
     }
-    delete user.password;
     return user;
   }
 

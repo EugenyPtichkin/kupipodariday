@@ -44,7 +44,9 @@ export class UsersController {
   async FindByUserName(
     @Param('username') username: string,
   ): Promise<UserPublicProfileResponseDto> {
-    return await this.usersService.findByUserName(username);
+    const userFound = await this.usersService.findByUserName(username);
+    delete userFound.password;
+    return userFound;
   }
 
   @Get(':username/wishes')
@@ -58,7 +60,7 @@ export class UsersController {
   @Post('find')
   async findMany(
     @Body() findUserDto: FindUsersDto,
-  ): Promise<UserProfileResponseDto[]> {
+  ): Promise<UserPublicProfileResponseDto[]> {
     return await this.usersService.findMany(findUserDto.query);
   }
 }

@@ -80,12 +80,9 @@ export class WishesService {
     if (wishToBeUpdated.owner.id !== userId) {
       throw new BadRequestException('Чужой подарок нельзя редактировать');
     }
-    if (
-      (updateWishDto.price || updateWishDto.description) &&
-      wishToBeUpdated.raised > 0
-    ) {
+    if (updateWishDto.price && wishToBeUpdated.raised > 0) {
       throw new BadRequestException(
-        'Цену и описанеи подарка нельзя редактировать, поскольку на него уже скидываются',
+        'Цену подарка нельзя редактировать, поскольку на него уже скидываются',
       );
     }
     await this.wishRepository.update(wishId, updateWishDto);
