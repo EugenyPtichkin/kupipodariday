@@ -81,11 +81,6 @@ export class UsersService {
           email: email,
         },
       });
-      if (userUsesEmail) {
-        console.log(
-          `userUsesEmail=${userUsesEmail} userUsesEmail.id=${userUsesEmail.id} userId=${userId}`,
-        );
-      }
       if (userUsesEmail && userUsesEmail.id !== userId) {
         throw new ConflictException(
           'Ошибка валидации переданных значений: email уже занят',
@@ -98,11 +93,6 @@ export class UsersService {
           username: username,
         },
       });
-      if (userUsesUserName) {
-        console.log(
-          `userUsesUserName.id=${userUsesUserName.id} userId=${userId}`,
-        );
-      }
       if (userUsesUserName && userUsesUserName.id !== userId) {
         throw new ConflictException(
           'Ошибка валидации переданных значений: username уже занят',
